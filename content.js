@@ -1,21 +1,26 @@
-function handleSystemThemeChange(event) {
-    const darkModeEnabled = event.matches
-    
-    setDarkMode(darkModeEnabled)
+/**
+ * @typedef {Object} ClickUpUserResponse
+ * @property {Object} user
+ * @property {boolean} user.dark_theme
+ */
+
+async function handleSystemThemeChange(event) {
+    const systemDarkModeEnabled = Boolean(event.matches)
+    const appDarkModeEnabled = await darkModeEnabled()
+
+    if (systemDarkModeEnabled === appDarkModeEnabled) {
+        return
+    }
+
+    await setDarkMode(systemDarkModeEnabled)
 }
 
-const systemThemeQuery = window.matchMedia('(prefers-color-scheme: dark)')
-
-// Listen for changes to the system theme
-systemThemeQuery.addEventListener('change', handleSystemThemeChange)
-
 /**
- * 
- * @param {boolean} enabled 
+ *
+ * @param {boolean} enabled
  * @returns {Promise<void>}
  */
 async function setDarkMode(enabled) {
-    const authToken = localStorage.getItem('id_token')
     try {
         const res = await fetch('https://app.clickup.com/user/v1/user', {
             method: 'PUT',
@@ -24,7 +29,7 @@ async function setDarkMode(enabled) {
             }),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`
+                'Authorization': `Bearer ${getAuthToken()}`
             }
         })
 
@@ -36,6 +41,9 @@ async function setDarkMode(enabled) {
             return
         }
 
+        /**
+         * @type {ClickUpUserResponse}
+         */
         const data = await res.json()
 
         if (data?.user?.dark_theme !== enabled) {
@@ -51,3 +59,38 @@ async function setDarkMode(enabled) {
         console.error('Error setting dark mode', err)
     }
 }
+
+/**
+ * @returns {Promise<boolean>}
+ */
+async function darkModeEnabled() {
+    const res = await fetch('https://app.clickup.com/user/v1/user', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAuthToken()}`
+        }
+    })
+
+    /**
+     * @type {ClickUpUserResponse}
+     */
+    const data = await res.json()
+
+    return data?.user?.dark_theme
+}
+
+function getAuthToken() {
+    return localStorage.getItem('id_token')
+}
+
+
+(async () => {
+    const systemThemeQuery = window.matchMedia('(prefers-color-scheme: dark)')
+
+    // Initial check for the system theme
+    await handleSystemThemeChange(systemThemeQuery)
+
+    // Listen for changes to the system theme
+    systemThemeQuery.addEventListener('change', handleSystemThemeChange)
+})();
