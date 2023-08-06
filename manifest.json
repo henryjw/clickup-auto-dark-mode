@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "1.0",
+  "version": "1.0.0",
 
   "name": "ClickUp Auto Dark Mode",
   "description": "Automatically turns dark mode on or off based on the system's theme",
