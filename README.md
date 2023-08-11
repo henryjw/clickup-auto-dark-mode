@@ -2,6 +2,8 @@
 
 ClickUp has a setting to enable/disable dark mode, but it must be toggled manually. This extension changes it automatically based on the user's OS theme (dark mode / light mode).
 
+Download from Chrome Web Store: https://chrome.google.com/webstore/detail/clickup-auto-dark-mode/cajelcfgpcigcojafcknklkfdfmdflbg
+
 ## Limitations
 - Not yet tested with ClickUp 3.0
 
