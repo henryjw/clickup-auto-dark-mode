@@ -36,7 +36,7 @@ async function setDarkMode(enabled) {
         })
 
         if (res.status !== 200) {
-            throw new Error('Expected 200')
+            throw new Error(`Expected 200, got ${res.status}`)
         }
 
         if (res.type === 'cors') {
