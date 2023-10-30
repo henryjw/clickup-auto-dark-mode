@@ -4,9 +4,6 @@ ClickUp has a setting to enable/disable dark mode, but it must be toggled manual
 
 Download from Chrome Web Store: https://chrome.google.com/webstore/detail/clickup-auto-dark-mode/cajelcfgpcigcojafcknklkfdfmdflbg
 
-## Limitations
-- Not yet tested with ClickUp 3.0
-
 ### Loading the extension
 To load this extension in your browser, follow the [Chrome dev instructions](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked).
 
