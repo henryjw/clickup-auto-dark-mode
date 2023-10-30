@@ -4,6 +4,8 @@
  * @property {boolean} user.dark_theme
  */
 
+const USER_URL = `${window.location.origin}/user/v1/user`;
+
 async function handleSystemThemeChange(event) {
     const systemDarkModeEnabled = Boolean(event.matches)
     const appDarkModeEnabled = await darkModeEnabled()
@@ -22,7 +24,7 @@ async function handleSystemThemeChange(event) {
  */
 async function setDarkMode(enabled) {
     try {
-        const res = await fetch('https://app.clickup.com/user/v1/user', {
+        const res = await fetch(USER_URL, {
             method: 'PUT',
             body: JSON.stringify({
                 dark_theme: enabled
@@ -64,7 +66,7 @@ async function setDarkMode(enabled) {
  * @returns {Promise<boolean>}
  */
 async function darkModeEnabled() {
-    const res = await fetch('https://app.clickup.com/user/v1/user', {
+    const res = await fetch(USER_URL, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
