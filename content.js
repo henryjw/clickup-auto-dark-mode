@@ -66,20 +66,24 @@ async function setDarkMode(enabled) {
  * @returns {Promise<boolean>}
  */
 async function darkModeEnabled() {
-    const res = await fetch(USER_URL, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${getAuthToken()}`
-        }
-    })
+    try {
+        const res = await fetch(USER_URL, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getAuthToken()}`
+            }
+        })
 
-    /**
-     * @type {ClickUpUserResponse}
-     */
-    const data = await res.json()
+        /**
+         * @type {ClickUpUserResponse}
+         */
+        const data = await res.json()
 
-    return data?.user?.dark_theme
+        return data?.user?.dark_theme
+    } catch(err) {
+        console.error('Error getting dark mode status', err)
+    }
 }
 
 function getAuthToken() {
